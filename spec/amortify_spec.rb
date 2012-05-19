@@ -1,4 +1,4 @@
-require File.join( File.dirname(__FILE__), '..', "spec_helper" )
+require File.join( File.dirname(__FILE__), "spec_helper" )
 require 'csv'
 
 # Reads a given csv file and turns it into an array of the form returned by #reducing_schedule
