@@ -1,6 +1,5 @@
 require File.join( File.dirname(__FILE__), '..', "spec_helper" )
 require 'csv'
-require 'debugger'
 
 # Reads a given csv file and turns it into an array of the form returned by #reducing_schedule
 def file_to_expectation(file_name)
