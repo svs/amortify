@@ -35,11 +35,11 @@ module Amortify
     # amount
     # number_of_installments
     # interest rate
-    # round_interest_to      -> a Numeric signifying a multiple to round the interest component to.
-    # round_principal_to     -> a Numeric signifying a multiple to round the principal component to.
-    # round_total_to         -> a Numeric signifying a multiple to round the total payment_to
-    # rounding_style         -> either of :round, :ceil or :floor
-    # force_num_installments -> when true, will not let the schedule extend due to rounding down.
+    # round_interest_to      -> Optional. A Numeric signifying a multiple to round the interest component to.
+    # round_principal_to     -> Optional. A Numeric signifying a multiple to round the principal component to.
+    # round_total_to         -> Optional. A Numeric signifying a multiple to round the total payment_to
+    # rounding_style         -> Optional. Either of :round, :ceil or :floor
+    # force_num_installments -> Optional. When true, will not let the schedule extend due to rounding down.
     def self.reducing_schedule(options)
       # someone please give ruby some named arguments!!
       options = {:round_interest_to => 0.01, :round_principal_to => 0.01, :rounding_style => :round, :round_total_to => 0.01}.merge(options)
@@ -126,38 +126,6 @@ module Amortify
       return @_reducing_schedule
     end
   end #EquatedWeekly
-
-
-  module BulletLoan
-  end #BulletLoan
-
-  module BulletLoanWithPeriodicInterest
-  end #BulletLoanWithPeriodicInterest
-
-  module CustomPrincipal
-    
-    def reducing_schedule
-      return @_reducing_schedule if @_reducing_schedule
-      @_reducing_schedule = {}    
-      balance = amount
-      installment = 1
-      while balance > 0
-        @_reducing_schedule[installment] = {}
-        @_reducing_schedule[installment][:interest_payable]  = interest_calculation(balance)
-        if rs.force_num_installments and installment == number_of_installments
-          @_reducing_schedule[installment][:principal_payable] = balance
-        else
-          @_reducing_schedule[installment][:principal_payable] = scheduled_principal_for_installment(installment)
-        end
-        balance = balance - @_reducing_schedule[installment][:principal_payable]
-        installment += 1
-      end
-      return @_reducing_schedule
-    end        
-  end
-
-  module CustomPrincipalAndInterest
-  end
 
 end
 
